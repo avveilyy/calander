@@ -49,12 +49,21 @@
         acara: [],
         pencarian: "",
         kategoriDipilih: "kuliah",
-        idSedangDiedit: null
+        idSedangDiedit: null,
+        tampilan: "bulan" // "bulan" atau "tahun"
     };
+
+    var BATAS_AWAL = hariIni.getFullYear() - 10;
+    var BATAS_AKHIR = hariIni.getFullYear() + 10;
+
 
     /* ---------- 3. ELEMEN DOM ---------- */
 
     var el = {
+        card: document.getElementById("calendarCard"),
+        backBtn: document.getElementById("backBtn"),
+        backLabel: document.getElementById("backLabel"),
+        yearGrid: document.getElementById("yearGrid"),
         weekdayRow: document.getElementById("weekdayRow"),
         grid: document.getElementById("calendarGrid"),
         monthSelect: document.getElementById("monthSelect"),
@@ -271,11 +280,26 @@
         document.documentElement.style.setProperty("--accent-strong", w.strong);
     }
 
+    /* Dispatcher: memilih antara tampilan bulanan atau tahunan */
     function renderKalender() {
         terapkanWarnaBulan();
         el.monthSelect.value = String(state.bulan);
         el.yearSelect.value = String(state.tahun);
+        el.backLabel.textContent = String(state.tahun);
 
+        var modeTahun = state.tampilan === "tahun";
+        el.card.classList.toggle("mode-tahun", modeTahun);
+        el.weekdayRow.hidden = modeTahun;
+        el.grid.hidden = modeTahun;
+        el.yearGrid.hidden = !modeTahun;
+
+        if (modeTahun) { renderTahun(); } else { renderBulan(); }
+
+        renderPanel();
+        renderStatistik();
+    }
+
+    function renderBulan() {
         el.grid.innerHTML = "";
 
         var pertama = new Date(state.tahun, state.bulan, 1);
@@ -316,8 +340,6 @@
 
         // baris terakhir disembunyikan bila seluruhnya milik bulan lain
         rapikanBarisTerakhir(geser, jumlahHari);
-        renderPanel();
-        renderStatistik();
     }
 
     function rapikanBarisTerakhir(geser, jumlahHari) {
@@ -409,10 +431,117 @@
 
     /* Perbarui penanda "selected" tanpa membangun ulang seluruh grid */
     function perbaruiSeleksi() {
+        if (state.tampilan !== "bulan") return;
         var sel = el.grid.querySelectorAll(".day-cell");
         for (var i = 0; i < sel.length; i++) {
             sel[i].classList.toggle("selected", sel[i].dataset.key === state.tanggalTerpilih);
         }
+    }
+
+    /* ---------- 8b. RENDER: TAMPILAN TAHUNAN ---------- */
+
+    var HURUF_HARI = ["Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sb"];
+
+    function renderTahun() {
+        el.yearGrid.innerHTML = "";
+        var keyHariIni = toKey(new Date());
+        for (var b = 0; b < 12; b++) {
+            el.yearGrid.appendChild(buatMiniBulan(b, keyHariIni));
+        }
+    }
+
+    function buatMiniBulan(bulan, keyHariIni) {
+        var warna = WARNA_BULAN[bulan];
+        var now = new Date();
+
+        var kotak = document.createElement("div");
+        kotak.className = "mini-month";
+        kotak.style.setProperty("--m-soft", warna.soft);
+        kotak.style.setProperty("--m-strong", warna.strong);
+        if (state.tahun === now.getFullYear() && bulan === now.getMonth()) {
+            kotak.classList.add("is-current");
+        }
+
+        var judul = document.createElement("div");
+        judul.className = "mini-title";
+        judul.textContent = NAMA_BULAN[bulan];
+        kotak.appendChild(judul);
+
+        var barisHari = document.createElement("div");
+        barisHari.className = "mini-weekdays";
+        HURUF_HARI.forEach(function(h) {
+            var s = document.createElement("span");
+            s.textContent = h;
+            barisHari.appendChild(s);
+        });
+        kotak.appendChild(barisHari);
+
+        var grid = document.createElement("div");
+        grid.className = "mini-grid";
+
+        var geser = new Date(state.tahun, bulan, 1).getDay();
+        var jumlahHari = new Date(state.tahun, bulan + 1, 0).getDate();
+
+        for (var i = 0; i < geser; i++) {
+            var kosong = document.createElement("div");
+            kosong.className = "mini-day blank";
+            grid.appendChild(kosong);
+        }
+        for (var t = 1; t <= jumlahHari; t++) {
+            grid.appendChild(buatMiniHari(bulan, t, keyHariIni));
+        }
+        kotak.appendChild(grid);
+
+        // klik di area bulan (bukan tanggal) -> buka tampilan bulan tersebut
+        kotak.addEventListener("click", function() { bukaBulan(bulan, null); });
+
+        return kotak;
+    }
+
+    function buatMiniHari(bulan, tanggal, keyHariIni) {
+        var key = keyFrom(state.tahun, bulan, tanggal);
+        var d = fromKey(key);
+
+        var sel = document.createElement("div");
+        sel.className = "mini-day";
+        sel.textContent = tanggal;
+        if (d.getDay() === 0 || d.getDay() === 6) sel.classList.add("weekend");
+        if (key === keyHariIni) sel.classList.add("today");
+
+        var daftar = acaraPadaTanggal(key);
+        if (daftar.length) {
+            var dots = document.createElement("div");
+            dots.className = "mini-dots";
+            daftar.slice(0, 3).forEach(function(a) {
+                var titik = document.createElement("span");
+                titik.className = "mini-dot";
+                titik.style.background = katInfo(a.kategori).color;
+                dots.appendChild(titik);
+                if (cocokPencarian(a)) sel.classList.add("search-hit");
+            });
+            sel.appendChild(dots);
+            sel.title = daftar.length + " acara pada " + formatTanggalPanjang(key);
+        }
+
+        // klik tanggal -> langsung buka bulan itu dengan tanggal tersebut terpilih
+        sel.addEventListener("click", function(e) {
+            e.stopPropagation();
+            bukaBulan(bulan, key);
+        });
+
+        return sel;
+    }
+
+    function bukaBulan(bulan, key) {
+        state.bulan = bulan;
+        state.tampilan = "bulan";
+        if (key) state.tanggalTerpilih = key;
+        renderKalender();
+    }
+
+    function bukaTampilanTahun() {
+        state.tampilan = "tahun";
+        renderKalender();
     }
 
     /* ---------- 9. RENDER: PANEL SAMPING ---------- */
@@ -612,6 +741,7 @@
         state.tahun = d.getFullYear();
         state.bulan = d.getMonth();
         state.tanggalTerpilih = tanggal;
+        state.tampilan = "bulan";
 
         tutupModal();
         renderKalender();
@@ -638,6 +768,7 @@
     /* ---------- 11. NAVIGASI ---------- */
 
     function gantiBulan(langkah) {
+        if (state.tampilan === "tahun") { gantiTahun(langkah); return; }
         var b = state.bulan + langkah;
         var t = state.tahun;
         if (b < 0) {
@@ -648,10 +779,15 @@
             b = 0;
             t++;
         }
-        var batasAwal = hariIni.getFullYear() - 10;
-        var batasAkhir = hariIni.getFullYear() + 10;
-        if (t < batasAwal || t > batasAkhir) return;
+        if (t < BATAS_AWAL || t > BATAS_AKHIR) return;
         state.bulan = b;
+        state.tahun = t;
+        renderKalender();
+    }
+
+    function gantiTahun(langkah) {
+        var t = state.tahun + langkah;
+        if (t < BATAS_AWAL || t > BATAS_AKHIR) return;
         state.tahun = t;
         renderKalender();
     }
@@ -661,6 +797,7 @@
         state.tahun = now.getFullYear();
         state.bulan = now.getMonth();
         state.tanggalTerpilih = toKey(now);
+        state.tampilan = "bulan";
         renderKalender();
     }
 
@@ -671,8 +808,11 @@
         el.nextBtn.addEventListener("click", function() { gantiBulan(1); });
         el.todayBtn.addEventListener("click", keHariIni);
 
+        el.backBtn.addEventListener("click", bukaTampilanTahun);
+
         el.monthSelect.addEventListener("change", function() {
             state.bulan = Number(el.monthSelect.value);
+            state.tampilan = "bulan";
             renderKalender();
         });
         el.yearSelect.addEventListener("change", function() {
@@ -709,7 +849,12 @@
         });
 
         document.addEventListener("keydown", function(e) {
-            if (e.key === "Escape" && !el.overlay.hidden) tutupModal();
+            if (e.key === "Escape" && !el.overlay.hidden) { tutupModal(); return; }
+            if (e.key === "Escape" && state.tampilan === "tahun") {
+                state.tampilan = "bulan";
+                renderKalender();
+                return;
+            }
             if (el.overlay.hidden) {
                 if (e.key === "ArrowLeft") gantiBulan(-1);
                 if (e.key === "ArrowRight") gantiBulan(1);
