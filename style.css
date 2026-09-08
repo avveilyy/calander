@@ -1,3 +1,12 @@
+/* ==========================================================
+   KALENDER DINAMIS - style.css
+   Gaya: pastel lembut, kartu putih membulat, aksen warna
+   yang berganti mengikuti bulan yang sedang dibuka.
+   ========================================================== */
+
+
+/* ---------- 1. Variabel & Reset ---------- */
+
 :root {
     /* aksen bulan (diubah lewat JavaScript) */
     --accent-soft: #bfe3f5;
