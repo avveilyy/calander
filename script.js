@@ -502,7 +502,7 @@
 
   /* ---------- 8b. RENDER: TAMPILAN TAHUNAN ---------- */
 
-  var HURUF_HARI = ["Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sb"];
+  var HURUF_HARI = ["S", "M", "T", "W", "T", "F", "ST"];
 
   function renderTahun() {
     el.yearGrid.innerHTML = "";
