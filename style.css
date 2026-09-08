@@ -1,3 +1,12 @@
+/* ==========================================================
+   KALENDER DINAMIS - style.css
+   Gaya: pastel lembut, kartu putih membulat, aksen warna
+   yang berganti mengikuti bulan yang sedang dibuka.
+   ========================================================== */
+
+
+/* ---------- 1. Variabel & Reset ---------- */
+
 :root {
     /* aksen bulan (diubah lewat JavaScript) */
     --accent-soft: #bfe3f5;
@@ -138,6 +147,66 @@ body {
 
 .period-picker select:focus-visible {
     outline: 2px solid var(--accent-strong);
+}
+
+
+/* ---------- 4b. Topbar: tombol kembali ala iPhone ---------- */
+
+.card-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    min-height: 30px;
+    margin-bottom: 2px;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent-strong);
+    background: transparent;
+    border: none;
+    padding: 4px 10px 4px 4px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background .18s, transform .18s, color .3s;
+}
+
+.back-btn:hover {
+    background: color-mix(in srgb, var(--accent-soft) 55%, transparent);
+}
+
+.back-btn:active {
+    transform: scale(.94);
+}
+
+.back-btn .back-chevron {
+    font-size: 26px;
+    line-height: .8;
+    margin-top: -2px;
+}
+
+.view-hint {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-soft);
+}
+
+
+/* dalam mode tahunan: tombol kembali & dropdown bulan disembunyikan */
+
+.calendar-card.mode-tahun .back-btn,
+.calendar-card.mode-tahun #monthSelect {
+    display: none;
+}
+
+.calendar-card:not(.mode-tahun) .view-hint {
+    display: none;
 }
 
 
@@ -353,6 +422,126 @@ body {
     font-weight: 700;
     color: var(--ink-soft);
     padding-left: 4px;
+}
+
+
+/* ---------- 7b. Tampilan tahunan (12 mini kalender) ---------- */
+
+.year-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px 16px;
+    animation: zoomOut .3s cubic-bezier(.2, .9, .3, 1.15);
+}
+
+@keyframes zoomOut {
+    from {
+        opacity: 0;
+        transform: scale(1.06);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.mini-month {
+    border-radius: 14px;
+    padding: 6px;
+    cursor: pointer;
+    transition: transform .18s, box-shadow .18s, background .18s;
+}
+
+.mini-month:hover {
+    transform: translateY(-4px);
+    background: #fbfaff;
+    box-shadow: 0 12px 26px rgba(120, 110, 180, .16);
+}
+
+.mini-month.is-current {
+    background: #fbfaff;
+    box-shadow: inset 0 0 0 1.5px var(--m-strong);
+}
+
+.mini-title {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 6px;
+}
+
+.mini-weekdays,
+.mini-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+}
+
+.mini-weekdays {
+    background: var(--m-soft);
+    border-radius: 6px;
+    padding: 3px 0;
+    margin-bottom: 3px;
+}
+
+.mini-weekdays span {
+    text-align: center;
+    font-size: 9px;
+    font-weight: 700;
+    color: #4a4560;
+}
+
+.mini-day {
+    position: relative;
+    height: 25px;
+    padding-bottom: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: #5b5670;
+    border-radius: 50%;
+    transition: background .15s;
+}
+
+.mini-day.blank {
+    visibility: hidden;
+}
+
+.mini-day.weekend {
+    color: #e08398;
+}
+
+.mini-day:hover:not(.blank) {
+    background: #eeecf8;
+}
+
+.mini-day.today {
+    background: var(--m-strong);
+    color: #fff;
+}
+
+.mini-day.search-hit {
+    box-shadow: 0 0 0 1.5px var(--m-strong);
+}
+
+.mini-dots {
+    position: absolute;
+    bottom: 2px;
+    display: flex;
+    gap: 2px;
+}
+
+.mini-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+}
+
+.mini-day.today .mini-dot {
+    background: #fff !important;
 }
 
 
@@ -778,6 +967,30 @@ body {
     }
     .event-list {
         max-height: none;
+    }
+}
+
+@media (max-width: 760px) {
+    .year-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px 10px;
+    }
+    .view-hint {
+        display: none !important;
+    }
+    .calendar-card.mode-tahun .card-topbar {
+        min-height: 0;
+        margin-bottom: 0;
+    }
+    .mini-title {
+        font-size: 13px;
+    }
+    .mini-weekdays span {
+        font-size: 8px;
+    }
+    .mini-day {
+        font-size: 9.5px;
+        height: 23px;
     }
 }
 
