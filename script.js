@@ -1,13 +1,3 @@
-/* ==========================================================
-   KALENDER DINAMIS - script.js
-   Fitur:
-   1. Kalender bulanan + navigasi bulan & tahun
-   2. Tambah acara lewat formulir popup
-   3. Edit & hapus acara
-   4. Penyimpanan lokal (localStorage)
-   Tambahan: kategori berwarna, jam mulai/selesai, pencarian
-   ========================================================== */
-
 (function() {
     "use strict";
 
@@ -335,10 +325,14 @@
                 tanggal = i - geser + 1;
             }
 
-            if (bulanSel < 0) { bulanSel = 11;
-                tahunSel = state.tahun - 1; }
-            if (bulanSel > 11) { bulanSel = 0;
-                tahunSel = state.tahun + 1; }
+            if (bulanSel < 0) {
+                bulanSel = 11;
+                tahunSel = state.tahun - 1;
+            }
+            if (bulanSel > 11) {
+                bulanSel = 0;
+                tahunSel = state.tahun + 1;
+            }
 
             var key = keyFrom(tahunSel, bulanSel, tanggal);
             el.grid.appendChild(buatSel(key, tanggal, luar, keyHariIni));
@@ -690,8 +684,10 @@
     function tampilkanError(pesan, input) {
         el.formError.textContent = pesan;
         el.formError.hidden = false;
-        if (input) { input.classList.add("invalid");
-            input.focus(); }
+        if (input) {
+            input.classList.add("invalid");
+            input.focus();
+        }
     }
 
     function simpanDariForm(e) {
@@ -775,10 +771,14 @@
         if (state.tampilan === "tahun") { gantiTahun(langkah); return; }
         var b = state.bulan + langkah;
         var t = state.tahun;
-        if (b < 0) { b = 11;
-            t--; }
-        if (b > 11) { b = 0;
-            t++; }
+        if (b < 0) {
+            b = 11;
+            t--;
+        }
+        if (b > 11) {
+            b = 0;
+            t++;
+        }
         if (t < BATAS_AWAL || t > BATAS_AKHIR) return;
         state.bulan = b;
         state.tahun = t;
