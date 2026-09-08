@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kalender Dinamis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="app">
+      <!-- ============ JUDUL APLIKASI ============ -->
+      <header class="app-header">
+        <h1 class="app-title">Kalender Dinamis</h1>
+        <p class="app-subtitle">
+          Atur harimu, catat acaramu &mdash; semua tersimpan otomatis.
+        </p>
+      </header>
+
+      <main class="layout">
+        <!-- ============ KARTU KALENDER ============ -->
+        <section class="card calendar-card">
+          <div class="calendar-toolbar">
+            <button
+              class="nav-btn"
+              id="prevMonthBtn"
+              type="button"
+              aria-label="Bulan sebelumnya"
+            >
+              &#8249;
+            </button>
+
+            <div class="period-picker">
+              <select id="monthSelect" aria-label="Pilih bulan"></select>
+              <select id="yearSelect" aria-label="Pilih tahun"></select>
+            </div>
+
+            <button
+              class="nav-btn"
+              id="nextMonthBtn"
+              type="button"
+              aria-label="Bulan berikutnya"
+            >
+              &#8250;
+            </button>
+          </div>
+
+          <div class="calendar-actions">
+            <button class="pill-btn" id="todayBtn" type="button">
+              Hari Ini
+            </button>
+            <div class="search-box">
+              <span class="search-icon" aria-hidden="true">&#9906;</span>
+              <input
+                type="search"
+                id="searchInput"
+                placeholder="Cari acara..."
+                aria-label="Cari acara"
+              />
+              <button
+                class="clear-search"
+                id="clearSearchBtn"
+                type="button"
+                aria-label="Hapus pencarian"
+                hidden
+              >
+                &times;
+              </button>
+            </div>
+          </div>
+
+          <div class="weekday-row" id="weekdayRow"></div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+
+          <div class="legend" id="legend"></div>
+        </section>
+
+        <!-- ============ PANEL SAMPING ============ -->
+        <aside class="card side-card">
+          <div class="side-header">
+            <div>
+              <h2 class="side-title" id="sideTitle">Acara Hari Ini</h2>
+              <p class="side-date" id="sideDate"></p>
+            </div>
+            <button
+              class="add-btn"
+              id="addEventBtn"
+              type="button"
+              title="Tambah acara"
+            >
+              +
+            </button>
+          </div>
+
+          <div class="event-list" id="eventList"></div>
+        </aside>
+      </main>
+
+      <footer class="app-footer">
+        <span id="statsText"></span>
+      </footer>
+    </div>
+
+    <!-- ============ MODAL FORM ACARA ============ -->
+    <div class="modal-overlay" id="modalOverlay" hidden>
+      <div
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalTitle"
+      >
+        <div class="modal-head">
+          <h3 id="modalTitle">Tambah Acara</h3>
+          <button
+            class="close-btn"
+            id="closeModalBtn"
+            type="button"
+            aria-label="Tutup"
+          >
+            &times;
+          </button>
+        </div>
+
+        <form id="eventForm" novalidate>
+          <input type="hidden" id="eventId" />
+
+          <label class="field">
+            <span class="field-label">Judul Acara <b>*</b></span>
+            <input
+              type="text"
+              id="titleInput"
+              placeholder="Contoh: Presentasi Proyek"
+              maxlength="80"
+            />
+          </label>
+
+          <label class="field">
+            <span class="field-label">Tanggal <b>*</b></span>
+            <input type="date" id="dateInput" />
+          </label>
+
+          <div class="field-row">
+            <label class="field">
+              <span class="field-label">Jam Mulai</span>
+              <input type="time" id="startInput" />
+            </label>
+            <label class="field">
+              <span class="field-label">Jam Selesai</span>
+              <input type="time" id="endInput" />
+            </label>
+          </div>
+
+          <div class="field">
+            <span class="field-label">Kategori</span>
+            <div class="category-picker" id="categoryPicker"></div>
+          </div>
+
+          <label class="field">
+            <span class="field-label">Catatan</span>
+            <textarea
+              id="notesInput"
+              rows="2"
+              placeholder="Catatan tambahan (opsional)"
+              maxlength="200"
+            ></textarea>
+          </label>
+
+          <p class="form-error" id="formError" hidden></p>
+
+          <div class="confirm-delete" id="confirmDelete" hidden>
+            <span>Hapus acara ini secara permanen?</span>
+            <div class="confirm-actions">
+              <button type="button" class="btn btn-ghost" id="cancelDeleteBtn">
+                Batal
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                id="confirmDeleteBtn"
+              >
+                Ya, Hapus
+              </button>
+            </div>
+          </div>
+
+          <div class="modal-foot">
+            <button
+              type="button"
+              class="btn btn-danger-outline"
+              id="deleteBtn"
+              hidden
+            >
+              Hapus
+            </button>
+            <div class="spacer"></div>
+            <button type="button" class="btn btn-ghost" id="cancelBtn">
+              Batal
+            </button>
+            <button type="submit" class="btn btn-primary" id="saveBtn">
+              Simpan
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" hidden></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
