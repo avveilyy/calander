@@ -647,7 +647,7 @@ body {
 
 .event-time {
     flex: none;
-    width: 52px;
+    width: 60px;
     font-size: 11.5px;
     font-weight: 600;
     color: var(--item-color, #666);
@@ -938,6 +938,219 @@ body {
     color: #e2666e;
     background: #fff;
     border-color: #f3c3c6;
+}
+
+
+/* ---------- 10b. Tombol jam & pemilih waktu bergulir ---------- */
+
+.time-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+    padding: 10px 12px;
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: #fbfaff;
+    cursor: pointer;
+    transition: border-color .18s, background .18s;
+}
+
+.time-btn:hover {
+    background: #fff;
+    border-color: var(--accent-soft);
+}
+
+.time-btn.aktif {
+    border-color: var(--accent-strong);
+    background: #fff;
+}
+
+.time-btn.kosong .time-text {
+    color: #b9b5c9;
+}
+
+.time-btn.invalid {
+    border-color: #ef6d6d;
+    background: #fff6f6;
+}
+
+.time-caret {
+    font-size: 10px;
+    color: var(--ink-soft);
+}
+
+.wheel-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: rgba(40, 34, 70, .2);
+    animation: fadeIn .18s ease;
+}
+
+.wheel-pop {
+    --wheel-item: 38px;
+    position: fixed;
+    z-index: 61;
+    width: 272px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: var(--shadow-pop);
+    padding: 12px;
+    animation: popIn .2s cubic-bezier(.2, .9, .3, 1.3);
+}
+
+.wheel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+    padding: 0 4px;
+}
+
+.wheel-title {
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: -.01em;
+}
+
+.wheel-hint {
+    font-size: 10.5px;
+    color: var(--ink-soft);
+}
+
+.wheel-body {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    height: calc(var(--wheel-item) * 5);
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 20%, #000 80%, transparent 100%);
+    mask-image: linear-gradient(180deg, transparent 0%, #000 20%, #000 80%, transparent 100%);
+}
+
+.wheel-band {
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    top: 50%;
+    height: var(--wheel-item);
+    transform: translateY(-50%);
+    border-radius: 11px;
+    background: color-mix(in srgb, var(--accent-soft) 48%, transparent);
+    pointer-events: none;
+}
+
+.wheel-col {
+    flex: 1;
+    max-width: 88px;
+    height: calc(var(--wheel-item) * 5);
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    outline: none;
+    border-radius: 11px;
+}
+
+.wheel-col::-webkit-scrollbar {
+    display: none;
+}
+
+.wheel-col.fokus {
+    box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--accent-strong) 45%, transparent);
+}
+
+.wheel-pad {
+    height: calc(var(--wheel-item) * 2);
+}
+
+.wheel-item {
+    height: var(--wheel-item);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    scroll-snap-align: center;
+    font-size: 17px;
+    font-weight: 500;
+    color: #aeaabd;
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+    transition: color .16s, transform .16s;
+}
+
+.wheel-item.aktif {
+    color: var(--ink);
+    font-weight: 600;
+    transform: scale(1.07);
+}
+
+.wheel-sep {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+    padding-bottom: 2px;
+}
+
+.wheel-foot {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.wheel-foot .spacer {
+    flex: 1;
+}
+
+.wheel-foot .btn {
+    padding: 8px 14px;
+    font-size: 12.5px;
+}
+
+
+/* versi lembar bawah untuk layar kecil / sentuh */
+
+.wheel-pop.sheet {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    width: auto;
+    border-radius: 24px 24px 0 0;
+    padding: 14px 16px calc(16px + env(safe-area-inset-bottom, 0px));
+    animation: sheetUp .26s cubic-bezier(.2, .9, .3, 1.08);
+}
+
+.wheel-pop.sheet .wheel-body {
+    max-width: 330px;
+    margin: 0 auto;
+}
+
+.wheel-pop.sheet .wheel-col {
+    max-width: 100px;
+}
+
+.wheel-pop.sheet .wheel-item {
+    font-size: 19px;
+}
+
+@keyframes sheetUp {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: none;
+    }
 }
 
 
