@@ -72,8 +72,9 @@ Pengguna dapat menentukan jam mulai dan jam selesai menggunakan pemilih waktu ya
 4. Project siap digunakan.
 
 7. Live Demo ⬇️
+
 https://avveilyy.github.io/calander/
 
-8. Tujuan Project ⬇️
+9. Tujuan Project ⬇️
 Project ini dibuat untuk mempraktikkan penggunaan HTML, CSS, dan JavaScript dalam membuat aplikasi kalender yang interaktif, sederhana, dan responsive.
 
