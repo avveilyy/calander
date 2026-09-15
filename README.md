@@ -25,7 +25,7 @@ Kalender Dinamis
 * LocalStorage — Menyimpan data acara pada browser
 * Google Fonts — Font Inter untuk tampilan interface
 
-3. Desain⬇️
+3. Desain
 Website menggunakan desain yang sederhana, clean, dan modern dengan:
 * Background menggunakan gradasi warna pastel
 * Text berwarna dark purple
@@ -37,7 +37,7 @@ Website menggunakan desain yang sederhana, clean, dan modern dengan:
 * Animasi dan hover effect pada beberapa elemen
 Tampilan dibuat responsif sehingga kalender tetap dapat digunakan pada perangkat dengan ukuran layar yang lebih kecil.
 
-4. Struktur Project ⬇️
+4. Struktur Project 
 Kalender-Dinamis/
 │
 ├── index.html
@@ -45,7 +45,7 @@ Kalender-Dinamis/
 ├── script.js
 └── README.md
 
-5. Cara Kerja ⬇️
+5. Cara Kerja 
    
 Menambahkan Acara :
 Pengguna dapat menekan tombol + pada panel acara untuk membuka form penambahan acara. Pengguna kemudian dapat mengisi judul, tanggal, jam, kategori, dan catatan sebelum menekan tombol Simpan.
@@ -65,7 +65,7 @@ Kalender dapat ditampilkan dalam tampilan bulanan maupun tahunan. Pada tampilan 
 Memilih Waktu :
 Pengguna dapat menentukan jam mulai dan jam selesai menggunakan pemilih waktu yang tersedia pada form acara.
 
-6. Cara Menjalankan ⬇️
+6. Cara Menjalankan 
 1. Download atau clone repository.
 2. Buka folder project.
 3. Buka file index.html menggunakan browser.
@@ -75,6 +75,6 @@ Pengguna dapat menentukan jam mulai dan jam selesai menggunakan pemilih waktu ya
 
 https://avveilyy.github.io/calander/
 
-9. Tujuan Project ⬇️
+9. Tujuan Project 
 Project ini dibuat untuk mempraktikkan penggunaan HTML, CSS, dan JavaScript dalam membuat aplikasi kalender yang interaktif, sederhana, dan responsive.
 
