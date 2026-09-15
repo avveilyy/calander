@@ -1,4 +1,4 @@
-Kalender Dinamis
+KALENDER DINAMIS
 
 1. Fitur
 * Menampilkan kalender berdasarkan bulan dan tahun
@@ -37,7 +37,7 @@ Website menggunakan desain yang sederhana, clean, dan modern dengan:
 * Animasi dan hover effect pada beberapa elemen
 Tampilan dibuat responsif sehingga kalender tetap dapat digunakan pada perangkat dengan ukuran layar yang lebih kecil.
 
-4. Struktur Project 
+4. Struktur Project
 Kalender-Dinamis/
 │
 ├── index.html
@@ -45,36 +45,33 @@ Kalender-Dinamis/
 ├── script.js
 └── README.md
 
-5. Cara Kerja 
-   
-Menambahkan Acara :
+5. Cara Kerja
+Menambahkan Acara
 Pengguna dapat menekan tombol + pada panel acara untuk membuka form penambahan acara. Pengguna kemudian dapat mengisi judul, tanggal, jam, kategori, dan catatan sebelum menekan tombol Simpan.
 
-Mengedit Acara :
+Mengedit Acara
 Acara yang sudah dibuat dapat dipilih untuk membuka kembali data acara. Pengguna dapat mengubah informasi acara kemudian menyimpannya kembali.
 
-Menghapus Acara :
+Menghapus Acara
 Pengguna dapat menghapus acara melalui tombol Hapus. Sebelum acara dihapus, akan muncul konfirmasi untuk memastikan penghapusan.
 
-Mencari Acara :
+Mencari Acara
 Fitur search digunakan untuk mencari acara berdasarkan kata kunci yang dimasukkan pada kolom pencarian.
 
-Melihat Kalender :
+Melihat Kalender
 Kalender dapat ditampilkan dalam tampilan bulanan maupun tahunan. Pada tampilan tahunan, pengguna dapat memilih salah satu bulan untuk membuka kalender secara lebih detail.
 
-Memilih Waktu :
+Memilih Waktu
 Pengguna dapat menentukan jam mulai dan jam selesai menggunakan pemilih waktu yang tersedia pada form acara.
 
-6. Cara Menjalankan 
+6. Cara Menjalankan
 1. Download atau clone repository.
 2. Buka folder project.
 3. Buka file index.html menggunakan browser.
 4. Project siap digunakan.
 
-7. Live Demo ⬇️
-
+7. Live Demo
 https://avveilyy.github.io/calander/
 
-9. Tujuan Project 
+8. Tujuan Project
 Project ini dibuat untuk mempraktikkan penggunaan HTML, CSS, dan JavaScript dalam membuat aplikasi kalender yang interaktif, sederhana, dan responsive.
-
